@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">PokemonsApp</string>
+    <string name="update_button">Update</string>
+    <string name="check_internet">Check your internet connection or try again later</string>
+    <string name="smt_wrong">Sorry, something went wrong :(</string>
+    <string name="new_page_not_load">Error : New page is not available</string>
+
+    <string name="list_title">Pokemons</string>
+    <string name="name">Pokemon\'s name:</string>
+    <string name="height">Height:</string>
+    <string name="weight">Weight:</string>
+    <string name="ability">Abilities:</string>
+</resources>
