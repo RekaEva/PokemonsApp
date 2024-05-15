@@ -1,6 +1,6 @@
 package com.pokemoninfo.pokemonsapp.data.network
 
-import com.pokemoninfo.pokemonsapp.features.pokemondetails.domain.models.PokemonDetails
+import com.pokemoninfo.pokemonsapp.features.pokemondetails.data.models.PokemonDetails
 import com.pokemoninfo.pokemonsapp.features.pokemonlist.domain.models.PokemonListX
 import retrofit2.http.GET
 import retrofit2.http.Path

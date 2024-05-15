@@ -4,6 +4,7 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.pokemoninfo.pokemonsapp.features.pokemonlist.domain.models.PokemonListResult
 
+
 class PokemonPagingSource(
     private val loader: PokemonApi
 ) : PagingSource<Int, PokemonListResult>() {

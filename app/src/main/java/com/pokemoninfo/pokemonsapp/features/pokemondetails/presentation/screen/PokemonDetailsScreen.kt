@@ -32,7 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.pokemoninfo.pokemonsapp.R
-import com.pokemoninfo.pokemonsapp.features.pokemondetails.domain.models.PokemonDetails
+import com.pokemoninfo.pokemonsapp.features.pokemondetails.domain.models.Pokemon
 import com.pokemoninfo.pokemonsapp.features.pokemondetails.presentation.viewmodel.PokemonDetailsViewModel
 import com.pokemoninfo.pokemonsapp.uiutils.errorMessageBox
 
@@ -101,7 +101,7 @@ fun PokemonDetailsScreen(
 
 
 @Composable
-fun PokemonDataCard(pokemon: PokemonDetails?) {
+fun PokemonDataCard(pokemon: Pokemon?) {
 
     Card(
         modifier = Modifier
@@ -114,7 +114,7 @@ fun PokemonDataCard(pokemon: PokemonDetails?) {
         Column {
             if (pokemon != null) {
                 AsyncImage(
-                    model = pokemon.sprites.other.officialartwork.front_default,
+                    model = pokemon.imageUrl,
                     contentDescription = null,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -146,7 +146,17 @@ fun PokemonDataCard(pokemon: PokemonDetails?) {
                     textDecoration = TextDecoration.Underline
                 )
                 pokemon.abilities.forEachIndexed { index, item ->
-                    Text(text = "${index + 1}) ${item.ability.name}")
+                    Text(text = "${index + 1}) $item")
+                    Spacer(modifier = Modifier.height(8.dp))
+                }
+                Spacer(modifier = Modifier.height(10.dp))
+                Text(
+                    stringResource(id = R.string.ability),
+                    fontSize = 18.sp,
+                    textDecoration = TextDecoration.Underline
+                )
+                pokemon.types.forEachIndexed{ index, item ->
+                    Text(text = "${index + 1}) $item")
                     Spacer(modifier = Modifier.height(8.dp))
                 }
             }

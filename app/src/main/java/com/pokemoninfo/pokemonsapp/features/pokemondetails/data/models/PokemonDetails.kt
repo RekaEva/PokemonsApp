@@ -1,4 +1,4 @@
-package com.pokemoninfo.pokemonsapp.features.pokemondetails.domain.models
+package com.pokemoninfo.pokemonsapp.features.pokemondetails.data.models
 
 data class PokemonDetails(
     val abilities: List<Ability>,
@@ -7,4 +7,5 @@ data class PokemonDetails(
     val name: String,
     val sprites: Sprites,
     val weight: Int,
+    val types: List<Type>,
 )

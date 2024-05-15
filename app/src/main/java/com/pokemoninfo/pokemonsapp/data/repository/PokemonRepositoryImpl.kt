@@ -6,13 +6,15 @@ import androidx.paging.PagingData
 import com.pokemoninfo.pokemonsapp.data.network.PokemonApi
 import com.pokemoninfo.pokemonsapp.data.network.PokemonPagingSource
 import com.pokemoninfo.pokemonsapp.domain.PokemonRepository
-import com.pokemoninfo.pokemonsapp.features.pokemondetails.domain.models.PokemonDetails
+import com.pokemoninfo.pokemonsapp.features.pokemondetails.data.mapper.PokemonDataToDomainMapper
+import com.pokemoninfo.pokemonsapp.features.pokemondetails.domain.models.Pokemon
 import com.pokemoninfo.pokemonsapp.features.pokemonlist.domain.models.PokemonListResult
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class PokemonRepositoryImpl @Inject constructor(
-    private val api: PokemonApi
+    private val api: PokemonApi,
+    private val mapper: PokemonDataToDomainMapper
 ) : PokemonRepository {
 
     override fun getPokemonList(): Flow<PagingData<PokemonListResult>> {
@@ -22,8 +24,12 @@ class PokemonRepositoryImpl @Inject constructor(
         ).flow
     }
 
-    override suspend fun getPokemonDetails(name: String): PokemonDetails {
-        return api.getPokemonDetailsByName(name)
+    override suspend fun getPokemonDetails(name: String): Pokemon {
+            val response = api.getPokemonDetailsByName(name)
+            val pokemon = mapper.invoke(response)
+            return pokemon
+
+
     }
 
     companion object {

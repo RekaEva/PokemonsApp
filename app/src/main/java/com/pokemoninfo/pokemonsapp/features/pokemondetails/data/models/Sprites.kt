@@ -1,4 +1,6 @@
-package com.pokemoninfo.pokemonsapp.features.pokemondetails.domain.models
+package com.pokemoninfo.pokemonsapp.features.pokemondetails.data.models
+
+import com.pokemoninfo.pokemonsapp.features.pokemondetails.data.models.Other
 
 data class Sprites(
     val back_default: String,
