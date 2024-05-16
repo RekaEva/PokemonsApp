@@ -8,7 +8,7 @@ import com.pokemoninfo.pokemonsapp.features.pokemonlist.domain.models.PokemonFor
 
 class PokemonPagingSource(
     private val loader: PokemonApi,
-    private val mapper : PokemonDataToDomainMapperForList
+    private val mapper: PokemonDataToDomainMapperForList
 ) : PagingSource<Int, PokemonForList>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, PokemonForList> {
@@ -20,6 +20,7 @@ class PokemonPagingSource(
                 val fullPokemon = loader.getPokemonListDetailsByName(item.name)
                 mapper(fullPokemon)
             }
+
             val nextKey = if (pokelist.size < params.loadSize) null else page + 1
             LoadResult.Page(
                 data = pokelist,

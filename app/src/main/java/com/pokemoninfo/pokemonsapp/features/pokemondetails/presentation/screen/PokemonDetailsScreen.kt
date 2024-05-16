@@ -148,7 +148,7 @@ fun PokemonDataCard(pokemon: Pokemon?) {
                 }
                 Spacer(modifier = Modifier.height(10.dp))
                 Text(
-                    stringResource(id = R.string.ability),
+                    stringResource(id = R.string.type),
                     fontSize = 18.sp,
                     textDecoration = TextDecoration.Underline
                 )
