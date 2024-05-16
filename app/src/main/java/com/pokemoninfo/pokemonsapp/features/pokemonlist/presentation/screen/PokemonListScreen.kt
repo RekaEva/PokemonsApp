@@ -39,15 +39,14 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.items
 import coil.compose.AsyncImage
 import com.pokemoninfo.pokemonsapp.R
-import com.pokemoninfo.pokemonsapp.features.pokemonlist.domain.models.PokemonListResult
+import com.pokemoninfo.pokemonsapp.features.pokemonlist.domain.models.PokemonForList
 import com.pokemoninfo.pokemonsapp.features.pokemonlist.presentation.viewmodel.PokemonsListViewModel
 import com.pokemoninfo.pokemonsapp.uiutils.errorMessageBox
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PokemonListScreen(
-    data: LazyPagingItems<PokemonListResult>,
-    pokemonsListViewModel: PokemonsListViewModel,
+    data: LazyPagingItems<PokemonForList>,
     onClickNav: (String) -> Unit
 ) {
     Scaffold(
@@ -87,8 +86,7 @@ fun PokemonListScreen(
                     LazyColumn {
                         items(data) { pokemon ->
                             if (pokemon != null) {
-                                val urlImage = pokemonsListViewModel.returnListImgLink(pokemon.url)
-                                PokemonCard(pokemon, urlImage, onClickNav)
+                                PokemonCard(pokemon, onClickNav)
                             }
                         }
                         when (data.loadState.append) {
@@ -134,8 +132,7 @@ fun PokemonListScreen(
 
 @Composable
 fun PokemonCard(
-    pokemon: PokemonListResult,
-    urlImage: String,
+    pokemon: PokemonForList,
     onClickNav: (String) -> Unit
 ) {
     Card(
@@ -153,7 +150,7 @@ fun PokemonCard(
         {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 AsyncImage(
-                    model = urlImage,
+                    model = pokemon.imageUrl,
                     contentDescription = null,
                     modifier = Modifier
                         .size(150.dp)

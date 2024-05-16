@@ -1,6 +1,5 @@
 package com.pokemoninfo.pokemonsapp.features.pokemondetails.data.mapper
 
-import androidx.compose.ui.text.toUpperCase
 import com.pokemoninfo.pokemonsapp.features.pokemondetails.data.models.PokemonDetails
 import com.pokemoninfo.pokemonsapp.features.pokemondetails.domain.models.Pokemon
 import com.pokemoninfo.pokemonsapp.uiutils.formatName
@@ -12,7 +11,7 @@ class PokemonDataToDomainMapper @Inject constructor() {
         name = dto.name.formatName(),
         height = dto.height.toString(),
         weight = dto.weight.toString(),
-        imageUrl = dto.sprites.other.officialartwork.front_default,
+        imageUrl = dto.sprites.other.officialArtwork.frontDefault,
         abilities = dto.abilities.map { item->
             item.ability.name.formatName()
         },

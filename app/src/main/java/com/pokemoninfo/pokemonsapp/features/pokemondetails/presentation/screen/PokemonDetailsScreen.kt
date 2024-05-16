@@ -43,13 +43,11 @@ fun PokemonDetailsScreen(
     name: String?,
 ) {
     val uiState by pokemonDetailsViewModel.uiState.collectAsState()
-
     LaunchedEffect(Unit) {
         if (name != null) {
             pokemonDetailsViewModel.getPokemonDetails(name)
         }
     }
-
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -102,7 +100,6 @@ fun PokemonDetailsScreen(
 
 @Composable
 fun PokemonDataCard(pokemon: Pokemon?) {
-
     Card(
         modifier = Modifier
             .fillMaxSize()

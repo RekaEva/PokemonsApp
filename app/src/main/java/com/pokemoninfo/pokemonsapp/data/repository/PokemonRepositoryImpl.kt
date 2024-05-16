@@ -8,19 +8,21 @@ import com.pokemoninfo.pokemonsapp.data.network.PokemonPagingSource
 import com.pokemoninfo.pokemonsapp.domain.PokemonRepository
 import com.pokemoninfo.pokemonsapp.features.pokemondetails.data.mapper.PokemonDataToDomainMapper
 import com.pokemoninfo.pokemonsapp.features.pokemondetails.domain.models.Pokemon
-import com.pokemoninfo.pokemonsapp.features.pokemonlist.domain.models.PokemonListResult
+import com.pokemoninfo.pokemonsapp.features.pokemonlist.data.mapper.PokemonDataToDomainMapperForList
+import com.pokemoninfo.pokemonsapp.features.pokemonlist.domain.models.PokemonForList
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class PokemonRepositoryImpl @Inject constructor(
     private val api: PokemonApi,
-    private val mapper: PokemonDataToDomainMapper
+    private val mapper: PokemonDataToDomainMapper,
+    private val mapperForList: PokemonDataToDomainMapperForList
 ) : PokemonRepository {
 
-    override fun getPokemonList(): Flow<PagingData<PokemonListResult>> {
+    override fun getPokemonList(): Flow<PagingData<PokemonForList>> {
         return Pager(
             config = PagingConfig(pageSize = PAGE_SIZE, initialLoadSize = PAGE_SIZE),
-            pagingSourceFactory = { PokemonPagingSource(loader = api) }
+            pagingSourceFactory = { PokemonPagingSource(loader = api, mapperForList) }
         ).flow
     }
 
@@ -28,12 +30,10 @@ class PokemonRepositoryImpl @Inject constructor(
             val response = api.getPokemonDetailsByName(name)
             val pokemon = mapper.invoke(response)
             return pokemon
-
-
     }
 
     companion object {
-        const val PAGE_SIZE = 20
+        const val PAGE_SIZE = 10
     }
 
 }
