@@ -87,8 +87,7 @@ fun PokemonListScreen(
                     LazyColumn {
                         items(data) { pokemon ->
                             if (pokemon != null) {
-                                val urlImage = pokemonsListViewModel.returnListImgLink(pokemon.url)
-                                PokemonCard(pokemon, urlImage, onClickNav)
+                                PokemonCard(pokemon, pokemonsListViewModel, onClickNav)
                             }
                         }
                         when (data.loadState.append) {
@@ -116,13 +115,11 @@ fun PokemonListScreen(
                                     }
                                 }
                             }
-
                             LoadState.Loading -> {
                                 item {
                                     CircularProgressIndicator()
                                 }
                             }
-
                             is LoadState.NotLoading -> {}
                         }
                     }
@@ -135,7 +132,7 @@ fun PokemonListScreen(
 @Composable
 fun PokemonCard(
     pokemon: PokemonListResult,
-    urlImage: String,
+    pokemonsListViewModel: PokemonsListViewModel,
     onClickNav: (String) -> Unit
 ) {
     Card(
@@ -152,13 +149,13 @@ fun PokemonCard(
         Box(modifier = Modifier.fillMaxSize())
         {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                AsyncImage(
-                    model = urlImage,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(150.dp)
-                        .padding(8.dp),
-                )
+//                AsyncImage(
+//                    model = urlImage,
+//                    contentDescription = null,
+//                    modifier = Modifier
+//                        .size(150.dp)
+//                        .padding(8.dp),
+//                )
                 Column {
                     Text(
                         stringResource(R.string.name),
