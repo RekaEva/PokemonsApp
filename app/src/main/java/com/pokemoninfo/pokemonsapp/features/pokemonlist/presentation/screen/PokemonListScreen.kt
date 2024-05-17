@@ -38,7 +38,7 @@ import androidx.paging.compose.LazyPagingItems
 import coil.compose.AsyncImage
 import com.pokemoninfo.pokemonsapp.R
 import com.pokemoninfo.pokemonsapp.features.pokemonlist.domain.models.PokemonForList
-import com.pokemoninfo.pokemonsapp.uiutils.errorMessageBox
+import com.pokemoninfo.pokemonsapp.uiutils.ErrorMessageBox
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -75,7 +75,7 @@ fun PokemonListScreen(
                     }
                 }
                 is LoadState.Error -> {
-                    errorMessageBox(data.retry())
+                    ErrorMessageBox(data.retry())
                 }
                 is LoadState.NotLoading -> {
 

@@ -23,7 +23,6 @@ class PokemonDetailsViewModel @Inject constructor(
             try {
                 _uiState.emit(_uiState.value.copy(isLoading = true))
                 val data = pokemonDetails.getPokemonDetails(name)
-                Log.e("1112", data.name)
                 _uiState.update { currentState ->
                     currentState.copy(
                         pokemonDetails = data,
@@ -31,7 +30,6 @@ class PokemonDetailsViewModel @Inject constructor(
                     )
                 }
             } catch (errorMessage: Exception) {
-                Log.e("3333", errorMessage.toString())
                 _uiState.update { currentState ->
                     currentState.copy(
                         error = errorMessage,

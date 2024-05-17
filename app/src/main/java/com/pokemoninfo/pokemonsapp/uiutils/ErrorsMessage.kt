@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.sp
 import com.pokemoninfo.pokemonsapp.R
 
 @Composable
-fun errorMessageBox(retry: Unit) {
+fun ErrorMessageBox(retry: Unit) {
     Box(modifier = Modifier.fillMaxSize())
     {
         Column(

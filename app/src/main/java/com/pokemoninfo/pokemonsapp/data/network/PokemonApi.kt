@@ -15,7 +15,6 @@ interface PokemonApi {
         @Query("limit") limit: Int,
     ): PokemonListX
 
-
     @GET("pokemon/{name}")
     suspend fun getPokemonDetailsByName(@Path("name") name: String): PokemonDetails
 

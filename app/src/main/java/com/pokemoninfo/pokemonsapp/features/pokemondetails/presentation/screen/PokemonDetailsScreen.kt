@@ -38,7 +38,7 @@ import coil.compose.AsyncImage
 import com.pokemoninfo.pokemonsapp.R
 import com.pokemoninfo.pokemonsapp.features.pokemondetails.domain.models.Pokemon
 import com.pokemoninfo.pokemonsapp.features.pokemondetails.presentation.viewmodel.PokemonDetailsViewModel
-import com.pokemoninfo.pokemonsapp.uiutils.errorMessageBox
+import com.pokemoninfo.pokemonsapp.uiutils.ErrorMessageBox
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -93,7 +93,7 @@ fun PokemonDetailsScreen(
                 }
             } else uiState.error?.let {
                 if (name != null) {
-                    errorMessageBox(pokemonDetailsViewModel.getPokemonDetails(name))
+                    ErrorMessageBox(pokemonDetailsViewModel.getPokemonDetails(name))
                 }
             }
         }

@@ -13,28 +13,6 @@ class PokemonPagingSource(
     private val loader: PokemonApi,
     private val mapper: PokemonDataToDomainMapperForList
 ) : PagingSource<Int, PokemonForList>() {
-
-//    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, PokemonForList> {
-//        val page = params.key ?: 0
-//        val offset = params.loadSize * page
-//        return try {
-//            val response = loader.getPokemonList(limit = params.loadSize, offset = offset)
-//            val pokelist = response.pokeList.map { item->
-//                val fullPokemon = loader.getPokemonListDetailsByName(item.name)
-//                mapper(fullPokemon)
-//            }
-//            val nextKey = if (pokelist.size < params.loadSize) null else page + 1
-//            LoadResult.Page(
-//                data = pokelist,
-//                prevKey = null,
-//                nextKey = nextKey
-//            )
-//        } catch (e: Exception) {
-//            LoadResult.Error(e)
-//        }
-//    }
-
-
     @OptIn(DelicateCoroutinesApi::class)
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, PokemonForList> {
         val page = params.key ?: 0
@@ -48,9 +26,6 @@ class PokemonPagingSource(
                 }
             }
             val pokelist = deferredList.map { deferred -> deferred.await() }
-//                val fullPokemon = loader.getPokemonListDetailsByName(item.name)
-//                mapper(fullPokemon)
-//            }
             val nextKey = if (pokelist.size < params.loadSize) null else page + 1
             LoadResult.Page(
                 data = pokelist,
@@ -61,36 +36,6 @@ class PokemonPagingSource(
             LoadResult.Error(e)
         }
     }
-
-
-//    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, PokemonForList> {
-//        val page = params.key ?: 0
-//        val offset = params.loadSize * page
-//        return try {
-//            val response = loader.getPokemonList(limit = params.loadSize, offset = offset)
-//
-//            // Создаем список Deferred для асинхронных запросов
-//            val deferredList = response.pokeList.map { item ->
-//                GlobalScope.async {
-//                    val fullPokemon = loader.getPokemonListDetailsByName(item.name)
-//                    mapper(fullPokemon)
-//                }
-//            }
-//
-//            // Дожидаемся выполнения всех асинхронных запросов
-//            val pokelist = deferredList.map { deferred -> deferred.await() }
-//
-//            val nextKey = if (pokelist.size < params.loadSize) null else page + 1
-//            LoadResult.Page(
-//                data = pokelist,
-//                prevKey = null,
-//                nextKey = nextKey
-//            )
-//        } catch (e: Exception) {
-//            LoadResult.Error(e)
-//        }
-//    }
-
     override fun getRefreshKey(state: PagingState<Int, PokemonForList>): Int? {
         return state.anchorPosition
     }
