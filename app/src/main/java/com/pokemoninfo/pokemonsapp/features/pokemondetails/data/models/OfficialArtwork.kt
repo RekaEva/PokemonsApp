@@ -1,6 +1,7 @@
 package com.pokemoninfo.pokemonsapp.features.pokemondetails.data.models
 
+import com.google.gson.annotations.SerializedName
+
 data class OfficialArtwork(
-    val front_default: String,
-    val front_shiny: String
+    @SerializedName("front_default") val frontDefault: String
 )

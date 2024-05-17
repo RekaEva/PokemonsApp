@@ -41,17 +41,18 @@ class MainActivity : ComponentActivity() {
                         val data = pokemonsListViewModel.state.collectAsLazyPagingItems()
                         PokemonListScreen(
                             data = data,
-                            pokemonsListViewModel = pokemonsListViewModel
                         ) {
                             navController.navigate("$POKEMON_DETAILS_SCREEN/$it")
                         }
                     }
                     composable("$POKEMON_DETAILS_SCREEN/{name}") { name ->
                         val pokemonName = name.arguments?.getString("name")
-                        PokemonDetailsScreen(
-                            pokemonDetailsViewModel = pokemonDetailsViewModel,
-                            name = pokemonName
-                        )
+                        if (pokemonName != null) {
+                            PokemonDetailsScreen(
+                                pokemonDetailsViewModel = pokemonDetailsViewModel,
+                                name = pokemonName.lowercase()
+                            )
+                        }
                     }
                 }
             }

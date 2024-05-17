@@ -3,7 +3,7 @@ package com.pokemoninfo.pokemonsapp.data.network
 import com.pokemoninfo.pokemonsapp.data.repository.PokemonRepositoryImpl
 import com.pokemoninfo.pokemonsapp.domain.PokemonRepository
 import com.pokemoninfo.pokemonsapp.features.pokemondetails.data.mapper.PokemonDataToDomainMapper
-import dagger.Binds
+import com.pokemoninfo.pokemonsapp.features.pokemonlist.data.mapper.PokemonDataToDomainMapperForList
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -14,8 +14,11 @@ import retrofit2.converter.gson.GsonConverterFactory
 @Module
 class NetworkModule {
     @Provides
-    fun provideRepository(api: PokemonApi, mapper: PokemonDataToDomainMapper): PokemonRepository {
-        return PokemonRepositoryImpl(api, mapper)
+    fun provideRepository(
+        api: PokemonApi, mapper: PokemonDataToDomainMapper,
+        mapperForList: PokemonDataToDomainMapperForList
+    ): PokemonRepository {
+        return PokemonRepositoryImpl(api, mapper, mapperForList)
     }
 
     @Provides

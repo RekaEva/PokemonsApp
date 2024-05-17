@@ -11,7 +11,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
@@ -30,24 +32,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
-import androidx.paging.compose.items
 import coil.compose.AsyncImage
 import com.pokemoninfo.pokemonsapp.R
-import com.pokemoninfo.pokemonsapp.features.pokemonlist.domain.models.PokemonListResult
-import com.pokemoninfo.pokemonsapp.features.pokemonlist.presentation.viewmodel.PokemonsListViewModel
+import com.pokemoninfo.pokemonsapp.features.pokemonlist.domain.models.PokemonForList
 import com.pokemoninfo.pokemonsapp.uiutils.errorMessageBox
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PokemonListScreen(
-    data: LazyPagingItems<PokemonListResult>,
-    pokemonsListViewModel: PokemonsListViewModel,
+    data: LazyPagingItems<PokemonForList>,
     onClickNav: (String) -> Unit
 ) {
     Scaffold(
@@ -78,17 +74,17 @@ fun PokemonListScreen(
                         CircularProgressIndicator()
                     }
                 }
-
                 is LoadState.Error -> {
                     errorMessageBox(data.retry())
                 }
-
                 is LoadState.NotLoading -> {
-                    LazyColumn {
-                        items(data) { pokemon ->
-                            if (pokemon != null) {
-                                val urlImage = pokemonsListViewModel.returnListImgLink(pokemon.url)
-                                PokemonCard(pokemon, urlImage, onClickNav)
+
+                    LazyVerticalGrid(
+                        columns = GridCells.Fixed(2)
+                    ) {
+                        items(data.itemCount) { index ->
+                            data[index]?.let {
+                                PokemonCard(pokemon = it, onClickNav)
                             }
                         }
                         when (data.loadState.append) {
@@ -116,13 +112,11 @@ fun PokemonListScreen(
                                     }
                                 }
                             }
-
                             LoadState.Loading -> {
                                 item {
                                     CircularProgressIndicator()
                                 }
                             }
-
                             is LoadState.NotLoading -> {}
                         }
                     }
@@ -134,8 +128,7 @@ fun PokemonListScreen(
 
 @Composable
 fun PokemonCard(
-    pokemon: PokemonListResult,
-    urlImage: String,
+    pokemon: PokemonForList,
     onClickNav: (String) -> Unit
 ) {
     Card(
@@ -143,34 +136,38 @@ fun PokemonCard(
             .fillMaxWidth()
             .padding(10.dp)
             .clickable { onClickNav(pokemon.name) },
+        elevation = CardDefaults.cardElevation(8.dp),
         shape = RoundedCornerShape(2.dp),
         colors = CardDefaults.cardColors(
             containerColor = Color.White
         )
     )
     {
-        Box(modifier = Modifier.fillMaxSize())
-        {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                AsyncImage(
-                    model = urlImage,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(150.dp)
-                        .padding(8.dp),
+        Column(
+            modifier = Modifier
+                .padding(10.dp)
+        ) {
+            AsyncImage(
+                model = pokemon.imageUrl,
+                contentDescription = null,
+                modifier = Modifier
+                    .size(150.dp)
+                    .padding(8.dp),
+            )
+            Column(
+                modifier = Modifier
+                    .padding(5.dp)
+            ) {
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    pokemon.name,
+                    style = MaterialTheme.typography.headlineSmall
                 )
-                Column {
-                    Text(
-                        stringResource(R.string.name),
-                        fontSize = 20.sp,
-                        style = TextStyle(textDecoration = TextDecoration.Underline)
-                    )
-                    Spacer(modifier = Modifier.height(10.dp))
-                    Text(
-                        pokemon.name,
-                        fontSize = 30.sp,
-                        style = MaterialTheme.typography.labelLarge
-                    )
+                Row {
+                    pokemon.types.forEachIndexed { index, item ->
+                        AsyncImage(model = item, contentDescription = null)
+                        Spacer(modifier = Modifier.width(8.dp))
+                    }
                 }
             }
         }

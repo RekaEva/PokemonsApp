@@ -1,7 +1,6 @@
 package com.pokemoninfo.pokemonsapp.features.pokemondetails.domain.usecase
 
 import com.pokemoninfo.pokemonsapp.domain.PokemonRepository
-import com.pokemoninfo.pokemonsapp.features.pokemondetails.data.models.PokemonDetails
 import com.pokemoninfo.pokemonsapp.features.pokemondetails.domain.models.Pokemon
 import javax.inject.Inject
 
