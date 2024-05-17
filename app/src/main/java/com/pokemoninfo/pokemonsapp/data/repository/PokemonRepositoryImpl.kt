@@ -27,9 +27,9 @@ class PokemonRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getPokemonDetails(name: String): Pokemon {
-            val response = api.getPokemonDetailsByName(name)
-            val pokemon = mapper.invoke(response)
-            return pokemon
+        val response = api.getPokemonDetailsByName(name)
+        val pokemon = mapper.invoke(response)
+        return pokemon
     }
 
     companion object {

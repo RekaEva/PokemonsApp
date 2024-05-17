@@ -35,19 +35,19 @@ class PokemonPagingSource(
 //    }
 
 
-        @OptIn(DelicateCoroutinesApi::class)
-        override suspend fun load(params: LoadParams<Int>): LoadResult<Int, PokemonForList> {
+    @OptIn(DelicateCoroutinesApi::class)
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, PokemonForList> {
         val page = params.key ?: 0
         val offset = params.loadSize * page
         return try {
             val response = loader.getPokemonList(limit = params.loadSize, offset = offset)
-            val deferredList = response.pokeList.map { item->
+            val deferredList = response.pokeList.map { item ->
                 GlobalScope.async {
                     val fullPokemon = loader.getPokemonListDetailsByName(item.name)
                     mapper(fullPokemon)
                 }
             }
-                val pokelist = deferredList.map { deferred -> deferred.await()  }
+            val pokelist = deferredList.map { deferred -> deferred.await() }
 //                val fullPokemon = loader.getPokemonListDetailsByName(item.name)
 //                mapper(fullPokemon)
 //            }

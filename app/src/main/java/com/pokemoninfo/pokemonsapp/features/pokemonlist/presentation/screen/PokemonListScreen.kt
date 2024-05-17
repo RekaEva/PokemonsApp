@@ -11,16 +11,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CardElevation
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -34,17 +32,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
-import androidx.paging.compose.items
 import coil.compose.AsyncImage
 import com.pokemoninfo.pokemonsapp.R
 import com.pokemoninfo.pokemonsapp.features.pokemonlist.domain.models.PokemonForList
-import com.pokemoninfo.pokemonsapp.features.pokemonlist.presentation.viewmodel.PokemonsListViewModel
 import com.pokemoninfo.pokemonsapp.uiutils.errorMessageBox
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -81,28 +74,19 @@ fun PokemonListScreen(
                         CircularProgressIndicator()
                     }
                 }
-
                 is LoadState.Error -> {
                     errorMessageBox(data.retry())
                 }
-
                 is LoadState.NotLoading -> {
 
                     LazyVerticalGrid(
                         columns = GridCells.Fixed(2)
                     ) {
-                        items(data.itemCount){ index->
-                            data[index]?.let{
+                        items(data.itemCount) { index ->
+                            data[index]?.let {
                                 PokemonCard(pokemon = it, onClickNav)
                             }
                         }
-//                    }
-//                    LazyColumn() {
-//                        items(data) { pokemon ->
-//                            if (pokemon != null) {
-//                                PokemonCard(pokemon, onClickNav)
-//                            }
-//                        }
                         when (data.loadState.append) {
                             is LoadState.Error -> {
                                 item {
@@ -130,16 +114,9 @@ fun PokemonListScreen(
                             }
                             LoadState.Loading -> {
                                 item {
-                                    Box(
-                                        contentAlignment = Alignment.Center,
-                                        modifier = Modifier
-                                            .fillMaxSize()
-                                    ) {
-                                        CircularProgressIndicator()
-                                    }
+                                    CircularProgressIndicator()
                                 }
                             }
-
                             is LoadState.NotLoading -> {}
                         }
                     }
@@ -159,175 +136,40 @@ fun PokemonCard(
             .fillMaxWidth()
             .padding(10.dp)
             .clickable { onClickNav(pokemon.name) },
-        elevation = CardDefaults.cardElevation(10.dp),
+        elevation = CardDefaults.cardElevation(8.dp),
         shape = RoundedCornerShape(2.dp),
         colors = CardDefaults.cardColors(
             containerColor = Color.White
         )
     )
     {
-        Box(modifier = Modifier.fillMaxSize())
-        {
-            Column() {
-                AsyncImage(
-                    model = pokemon.imageUrl,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(150.dp)
-                        .padding(8.dp),
+        Column(
+            modifier = Modifier
+                .padding(10.dp)
+        ) {
+            AsyncImage(
+                model = pokemon.imageUrl,
+                contentDescription = null,
+                modifier = Modifier
+                    .size(150.dp)
+                    .padding(8.dp),
+            )
+            Column(
+                modifier = Modifier
+                    .padding(5.dp)
+            ) {
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    pokemon.name,
+                    style = MaterialTheme.typography.headlineSmall
                 )
-                Column {
-                    Text(
-                        stringResource(R.string.name),
-                        fontSize = 20.sp,
-                        style = TextStyle(textDecoration = TextDecoration.Underline)
-                    )
-                    Spacer(modifier = Modifier.height(10.dp))
-                    Text(
-                        pokemon.name,
-                        fontSize = 30.sp,
-                        style = MaterialTheme.typography.labelLarge
-                    )
+                Row {
+                    pokemon.types.forEachIndexed { index, item ->
+                        AsyncImage(model = item, contentDescription = null)
+                        Spacer(modifier = Modifier.width(8.dp))
+                    }
                 }
             }
         }
     }
 }
-
-
-
-//@OptIn(ExperimentalMaterial3Api::class)
-//@Composable
-//fun PokemonListScreen(
-//    data: LazyPagingItems<PokemonForList>,
-//    onClickNav: (String) -> Unit
-//) {
-//    Scaffold(
-//        modifier = Modifier.fillMaxSize(),
-//        topBar = {
-//            TopAppBar(title = {
-//                Box(
-//                    modifier = Modifier.fillMaxWidth(),
-//                    contentAlignment = Alignment.Center
-//                ) {
-//                    Text(text = stringResource(R.string.list_title))
-//                }
-//            }
-//            )
-//        }) { innerPadding ->
-//        Box(
-//            Modifier
-//                .padding(innerPadding)
-//                .fillMaxSize()
-//        ) {
-//            when (data.loadState.refresh) {
-//                is LoadState.Loading -> {
-//                    Box(
-//                        contentAlignment = Alignment.Center,
-//                        modifier = Modifier
-//                            .fillMaxSize()
-//                    ) {
-//                        CircularProgressIndicator()
-//                    }
-//                }
-//
-//                is LoadState.Error -> {
-//                    errorMessageBox(data.retry())
-//                }
-//
-//                is LoadState.NotLoading -> {
-//                    LazyColumn {
-//                        items(data) { pokemon ->
-//                            if (pokemon != null) {
-//                                PokemonCard(pokemon, onClickNav)
-//                            }
-//                        }
-//                        when (data.loadState.append) {
-//                            is LoadState.Error -> {
-//                                item {
-//                                    Column(
-//                                        modifier = Modifier
-//                                            .fillMaxWidth(),
-//                                        horizontalAlignment = Alignment.CenterHorizontally,
-//                                        verticalArrangement = Arrangement.Center
-//                                    )
-//                                    {
-//                                        Text(
-//                                            text = stringResource(R.string.new_page_not_load),
-//                                            color = MaterialTheme.colorScheme.error
-//                                        )
-//                                        IconButton(
-//                                            onClick = { data.retry() }
-//                                        ) {
-//                                            Icon(
-//                                                Icons.Filled.Refresh,
-//                                                contentDescription = null
-//                                            )
-//                                        }
-//                                    }
-//                                }
-//                            }
-//                            LoadState.Loading -> {
-//                                item {
-//                                    Box(
-//                                        contentAlignment = Alignment.Center,
-//                                        modifier = Modifier
-//                                            .fillMaxSize()
-//                                    ) {
-//                                        CircularProgressIndicator()
-//                                    }
-//                                }
-//                            }
-//
-//                            is LoadState.NotLoading -> {}
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
-//}
-//
-//@Composable
-//fun PokemonCard(
-//    pokemon: PokemonForList,
-//    onClickNav: (String) -> Unit
-//) {
-//    Card(
-//        modifier = Modifier
-//            .fillMaxWidth()
-//            .padding(10.dp)
-//            .clickable { onClickNav(pokemon.name) },
-//        shape = RoundedCornerShape(2.dp),
-//        colors = CardDefaults.cardColors(
-//            containerColor = Color.White
-//        )
-//    )
-//    {
-//        Box(modifier = Modifier.fillMaxSize())
-//        {
-//            Row(verticalAlignment = Alignment.CenterVertically) {
-//                AsyncImage(
-//                    model = pokemon.imageUrl,
-//                    contentDescription = null,
-//                    modifier = Modifier
-//                        .size(150.dp)
-//                        .padding(8.dp),
-//                )
-//                Column {
-//                    Text(
-//                        stringResource(R.string.name),
-//                        fontSize = 20.sp,
-//                        style = TextStyle(textDecoration = TextDecoration.Underline)
-//                    )
-//                    Spacer(modifier = Modifier.height(10.dp))
-//                    Text(
-//                        pokemon.name,
-//                        fontSize = 30.sp,
-//                        style = MaterialTheme.typography.labelLarge
-//                    )
-//                }
-//            }
-//        }
-//    }
-//}

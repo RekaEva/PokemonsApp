@@ -1,19 +1,23 @@
 package com.pokemoninfo.pokemonsapp.features.pokemondetails.presentation.screen
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -56,7 +60,7 @@ fun PokemonDetailsScreen(
                     modifier = Modifier.fillMaxWidth(),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = stringResource(R.string.list_title))
+                    Text(text = stringResource(id = R.string.list_title))
                 }
             }
             )
@@ -124,18 +128,29 @@ fun PokemonDataCard(pokemon: Pokemon?) {
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(top = 15.dp)
                 )
-                Text(
-                    text = stringResource(id = R.string.height)
-                            + pokemon.height.toString(),
-                    fontSize = 16.sp,
-                    modifier = Modifier.padding(5.dp)
+                HorizontalDivider(Modifier.padding(vertical = 8.dp))
+                Row {
+                    pokemon.types.forEachIndexed { index, item ->
+                        AsyncImage(model = item, contentDescription = null)
+                        Spacer(modifier = Modifier.width(8.dp))
+                    }
+                }
+                HorizontalDivider(Modifier.padding(vertical = 8.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
                 )
-                Text(
-                    text = stringResource(id = R.string.weight)
-                            + pokemon.weight.toString(),
-                    fontSize = 16.sp,
-                    modifier = Modifier.padding(5.dp)
-                )
+                {
+                    Text(
+                        text = stringResource(id = R.string.height)
+                                + pokemon.height,
+                    )
+                    Text(
+                        text = stringResource(id = R.string.weight)
+                                + pokemon.weight,
+                    )
+                }
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     stringResource(id = R.string.ability),
@@ -147,15 +162,7 @@ fun PokemonDataCard(pokemon: Pokemon?) {
                     Spacer(modifier = Modifier.height(8.dp))
                 }
                 Spacer(modifier = Modifier.height(10.dp))
-                Text(
-                    stringResource(id = R.string.type),
-                    fontSize = 18.sp,
-                    textDecoration = TextDecoration.Underline
-                )
-                pokemon.types.forEachIndexed{ index, item ->
-                    Text(text = "${index + 1}) $item")
-                    Spacer(modifier = Modifier.height(8.dp))
-                }
+
             }
         }
     }

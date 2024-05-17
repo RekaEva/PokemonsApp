@@ -2,6 +2,7 @@ package com.pokemoninfo.pokemonsapp.features.pokemondetails.data.mapper
 
 import com.pokemoninfo.pokemonsapp.features.pokemondetails.data.models.PokemonDetails
 import com.pokemoninfo.pokemonsapp.features.pokemondetails.domain.models.Pokemon
+import com.pokemoninfo.pokemonsapp.uiutils.Types
 import com.pokemoninfo.pokemonsapp.uiutils.formatName
 import javax.inject.Inject
 
@@ -12,11 +13,16 @@ class PokemonDataToDomainMapper @Inject constructor() {
         height = dto.height.toString(),
         weight = dto.weight.toString(),
         imageUrl = dto.sprites.other.officialArtwork.frontDefault,
-        abilities = dto.abilities.map { item->
+        abilities = dto.abilities.map { item ->
             item.ability.name.formatName()
         },
-        types = dto.types.map { item->
-            item.type.name.uppercase()
-        }
+        types = dto.types.map { item ->
+            val typeName = item.type.name.uppercase()
+            try {
+                Types.valueOf("${typeName}_TYPE").getImageResource()
+            } catch (e: IllegalArgumentException) {
+                Types.UNKNOWN_TYPE.getImageResource()
+            }
+        },
     )
 }

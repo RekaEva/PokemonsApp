@@ -1,7 +1,6 @@
 package com.pokemoninfo.pokemonsapp
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -9,9 +8,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.pokemoninfo.pokemonsapp.di.DaggerApplicationComponent
 import com.pokemoninfo.pokemonsapp.ScreensName.Companion.POKEMONS_LIST_SCREEN
 import com.pokemoninfo.pokemonsapp.ScreensName.Companion.POKEMON_DETAILS_SCREEN
+import com.pokemoninfo.pokemonsapp.di.DaggerApplicationComponent
 import com.pokemoninfo.pokemonsapp.features.pokemondetails.presentation.screen.PokemonDetailsScreen
 import com.pokemoninfo.pokemonsapp.features.pokemondetails.presentation.viewmodel.PokemonDetailsViewModel
 import com.pokemoninfo.pokemonsapp.features.pokemonlist.presentation.screen.PokemonListScreen
