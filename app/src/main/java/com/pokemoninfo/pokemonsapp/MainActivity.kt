@@ -3,7 +3,6 @@ package com.pokemoninfo.pokemonsapp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -29,7 +28,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         component.inject(this)
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+//        enableEdgeToEdge()
         setContent {
             PokemonsAppTheme {
                 val navController = rememberNavController()
@@ -40,6 +39,7 @@ class MainActivity : ComponentActivity() {
                     composable(POKEMONS_LIST_SCREEN) {
                         val data = pokemonsListViewModel.state.collectAsLazyPagingItems()
                         PokemonListScreen(
+                            vm = pokemonsListViewModel,
                             data = data,
                         ) {
                             navController.navigate("$POKEMON_DETAILS_SCREEN/$it")

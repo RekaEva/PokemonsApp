@@ -1,6 +1,5 @@
 package com.pokemoninfo.pokemonsapp.features.pokemondetails.presentation.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pokemoninfo.pokemonsapp.features.pokemondetails.domain.usecase.GetPokemonDetails

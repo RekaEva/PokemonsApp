@@ -38,27 +38,25 @@ import androidx.paging.compose.LazyPagingItems
 import coil.compose.AsyncImage
 import com.pokemoninfo.pokemonsapp.R
 import com.pokemoninfo.pokemonsapp.features.pokemonlist.domain.models.PokemonForList
+import com.pokemoninfo.pokemonsapp.features.pokemonlist.presentation.viewmodel.PokemonsListViewModel
 import com.pokemoninfo.pokemonsapp.uiutils.ErrorMessageBox
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PokemonListScreen(
+    vm : PokemonsListViewModel,
     data: LazyPagingItems<PokemonForList>,
     onClickNav: (String) -> Unit
 ) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
-            TopAppBar(title = {
-                Box(
-                    modifier = Modifier.fillMaxWidth(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(text = stringResource(R.string.list_title))
-                }
-            }
-            )
-        }) { innerPadding ->
+            TopAppBar(
+                title = {
+                        Text(text = stringResource(id = R.string.app_name))
+                },
+            )}
+    ) { innerPadding ->
         Box(
             Modifier
                 .padding(innerPadding)
@@ -114,7 +112,12 @@ fun PokemonListScreen(
                             }
                             LoadState.Loading -> {
                                 item {
-                                    CircularProgressIndicator()
+                                    Box(
+                                        modifier = Modifier.fillMaxSize(),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        CircularProgressIndicator()
+                                    }
                                 }
                             }
                             is LoadState.NotLoading -> {}

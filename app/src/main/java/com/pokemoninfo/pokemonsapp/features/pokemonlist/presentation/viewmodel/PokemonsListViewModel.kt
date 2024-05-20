@@ -14,5 +14,4 @@ class PokemonsListViewModel @Inject constructor(
     val state = pokemonList
         .getPokemonList()
         .cachedIn(viewModelScope)
-
 }
