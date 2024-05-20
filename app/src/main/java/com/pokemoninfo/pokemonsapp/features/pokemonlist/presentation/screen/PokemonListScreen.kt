@@ -74,9 +74,11 @@ fun PokemonListScreen(
                         CircularProgressIndicator()
                     }
                 }
+
                 is LoadState.Error -> {
                     ErrorMessageBox(data.retry())
                 }
+
                 is LoadState.NotLoading -> {
 
                     LazyVerticalGrid(
@@ -112,11 +114,19 @@ fun PokemonListScreen(
                                     }
                                 }
                             }
+
                             LoadState.Loading -> {
                                 item {
-                                    CircularProgressIndicator()
+                                    Box(
+                                        contentAlignment = Alignment.Center,
+                                        modifier = Modifier
+                                            .fillMaxSize()
+                                    ) {
+                                        CircularProgressIndicator()
+                                    }
                                 }
                             }
+
                             is LoadState.NotLoading -> {}
                         }
                     }

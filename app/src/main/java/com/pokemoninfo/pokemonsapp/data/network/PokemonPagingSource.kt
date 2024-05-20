@@ -36,6 +36,7 @@ class PokemonPagingSource(
             LoadResult.Error(e)
         }
     }
+
     override fun getRefreshKey(state: PagingState<Int, PokemonForList>): Int? {
         return state.anchorPosition
     }
