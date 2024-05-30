@@ -3,33 +3,43 @@ package com.pokemoninfo.pokemonsapp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.pokemoninfo.pokemonsapp.ScreensName.Companion.POKEMONS_LIST_SCREEN
 import com.pokemoninfo.pokemonsapp.ScreensName.Companion.POKEMON_DETAILS_SCREEN
-import com.pokemoninfo.pokemonsapp.di.DaggerApplicationComponent
+import com.pokemoninfo.pokemonsapp.di.App
+
 import com.pokemoninfo.pokemonsapp.features.pokemondetails.presentation.screen.PokemonDetailsScreen
 import com.pokemoninfo.pokemonsapp.features.pokemondetails.presentation.viewmodel.PokemonDetailsViewModel
 import com.pokemoninfo.pokemonsapp.features.pokemonlist.presentation.screen.PokemonListScreen
 import com.pokemoninfo.pokemonsapp.features.pokemonlist.presentation.viewmodel.PokemonsListViewModel
+import com.pokemoninfo.pokemonsapp.uiutils.PokemonViewModelFactory
 import com.pokemoninfo.pokemonsapp.uiutils.theme.PokemonsAppTheme
 import javax.inject.Inject
 
 class MainActivity : ComponentActivity() {
-    @Inject
-    lateinit var pokemonsListViewModel: PokemonsListViewModel
+
 
     @Inject
-    lateinit var pokemonDetailsViewModel: PokemonDetailsViewModel
+    lateinit var viewModelFactory: PokemonViewModelFactory
 
-    private val component = DaggerApplicationComponent.create()
+    private val pokemonsListViewModel by lazy {
+        ViewModelProvider(this, viewModelFactory)[PokemonsListViewModel::class.java]
+    }
+    private val pokemonDetailsViewModel by lazy {
+        ViewModelProvider(this, viewModelFactory)[PokemonDetailsViewModel::class.java]
+    }
+    private val component by lazy {
+        (application as App).component
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         component.inject(this)
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+//        enableEdgeToEdge()
         setContent {
             PokemonsAppTheme {
                 val navController = rememberNavController()

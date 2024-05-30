@@ -3,6 +3,7 @@ package com.pokemoninfo.pokemonsapp.data.repository
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import com.pokemoninfo.pokemonsapp.data.database.LocalSource
 import com.pokemoninfo.pokemonsapp.data.network.PokemonApi
 import com.pokemoninfo.pokemonsapp.data.network.PokemonPagingSource
 import com.pokemoninfo.pokemonsapp.domain.PokemonRepository
@@ -16,10 +17,12 @@ import javax.inject.Inject
 class PokemonRepositoryImpl @Inject constructor(
     private val api: PokemonApi,
     private val mapper: PokemonDataToDomainMapper,
-    private val mapperForList: PokemonDataToDomainMapperForList
+    private val mapperForList: PokemonDataToDomainMapperForList,
+    private val localSource: LocalSource
 ) : PokemonRepository {
 
     override fun getPokemonList(): Flow<PagingData<PokemonForList>> {
+        localSource.metod()
         return Pager(
             config = PagingConfig(pageSize = PAGE_SIZE, initialLoadSize = PAGE_SIZE),
             pagingSourceFactory = { PokemonPagingSource(loader = api, mapperForList) }
